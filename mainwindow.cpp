@@ -38,7 +38,11 @@ void MainWindow::Calculate()
     if ((*err_ptr) == "") // parsing is performed only if there is no error detected
     {
         expr1.infix_expr.reverseList();
-        expr1.rpn();
+        if(!expr1.recursiveRPN())
+        {
+            ui->error_box->setText("Error: recursiveRPN returned non-zero value.");
+        }
+        //expr1.rpn();
         expr1.rpn_expr.reverseList();
         expr1.parseRpnExpr();
         expr1.stringRpn();

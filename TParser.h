@@ -5,6 +5,11 @@
 #include "TList.h"
 #include "QString"
 
+#define NO_ERROR            0
+#define NO_OPERAND_ERROR    1
+#define NO_R_BR_ERROR       2
+#define NO_L_BR_ERROR       3
+
 class TParser
 {
 public:
@@ -19,6 +24,7 @@ public:
     void prepare_expr(void);        // basic format conversions
     void parseRpnExpr(void);        // main parsing algorithm
     void rpn(void);                 // infix to postfix algorithm
+    int recursiveRPN(void);  // infix to postfix recursive algorithm
     void stringRpn(void);           // combines 'string_score' variable
     void validateExpr(QString * err_ptr);   // returns error text if the expression is invalid
 

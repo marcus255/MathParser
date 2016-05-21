@@ -56,66 +56,102 @@ void TParser::validateExpr(QString *err_ptr)
 
 void TParser::rpn()
 {   // http://pl.wikipedia.org/wiki/Odwrotna_notacja_polska#Algorytm_konwersji_z_notacji_infiksowej_do_ONP
-	TList op_stack;
-	TChar topChar, temp_char;
-	while (!this->infix_expr.isEmpty())
-	{
-		topChar = this->infix_expr.pop();
+    TList op_stack;
+    TChar topChar, temp_char;
+    while (!this->infix_expr.isEmpty())
+    {
+        topChar = this->infix_expr.pop();
         if (topChar.operand == 0)           // digits and decimal dot
-			this->rpn_expr.push(topChar);
-		else
-		{
-			if (topChar.operand == L_BR)
-				op_stack.push(topChar);
-			else if (topChar.operand == R_BR)
-			{
-				temp_char = op_stack.pop();
-				while (temp_char.operand != L_BR)
-				{
-					this->rpn_expr.push(temp_char);
-					temp_char = op_stack.pop();
-				}
-			}
+            this->rpn_expr.push(topChar);
+        else
+        {
+            if (topChar.operand == L_BR)
+                op_stack.push(topChar);
+            else if (topChar.operand == R_BR)
+            {
+                temp_char = op_stack.pop();
+                while (temp_char.operand != L_BR)
+                {
+                    this->rpn_expr.push(temp_char);
+                    temp_char = op_stack.pop();
+                }
+            }
             else                            // operators: +, -, *, /
-			{
-				if (op_stack.isEmpty())
-					op_stack.push(topChar);
-				else
-				{
-					temp_char = op_stack.getTop();
-					if (topChar.priorit > temp_char.priorit)
-						op_stack.push(topChar);
-					else
-					{
-						while (temp_char.priorit >= topChar.priorit)
-						{
-							this->rpn_expr.push(temp_char);
-							op_stack.pop();
-							if (!op_stack.isEmpty())
-								temp_char = op_stack.getTop();
-							else
-								break;
-						}
-						op_stack.push(topChar);
-					}
-				}
-			}
-		}
-	}
-	while (!op_stack.isEmpty())
-		this->rpn_expr.push(op_stack.pop());
+            {
+                if (op_stack.isEmpty())
+                    op_stack.push(topChar);
+                else
+                {
+                    temp_char = op_stack.getTop();
+                    if (topChar.priorit > temp_char.priorit)
+                        op_stack.push(topChar);
+                    else
+                    {
+                        while (temp_char.priorit >= topChar.priorit)
+                        {
+                            this->rpn_expr.push(temp_char);
+                            op_stack.pop();
+                            if (!op_stack.isEmpty())
+                                temp_char = op_stack.getTop();
+                            else
+                                break;
+                        }
+                        op_stack.push(topChar);
+                    }
+                }
+            }
+        }
+    }
+    while (!op_stack.isEmpty())
+        this->rpn_expr.push(op_stack.pop());
+}
+
+// https://pl.wikipedia.org/wiki/Odwrotna_notacja_polska#Algorytm_konwersji_z_notacji_infiksowej_do_ONP_.28rekurencyjny.29
+int TParser::recursiveRPN(void)
+{
+    int error = NO_ERROR;
+    TChar a, c;
+    c = this->infix_expr.pop();
+    if (c.operand == L_BR)
+    {
+        error = this->recursiveRPN();
+        if (error)
+            return error;
+        a = this->infix_expr.pop();
+        if (a.operand == 0 || a.operand == L_BR || a.operand == R_BR)
+            return NO_OPERAND_ERROR;
+        error = this->recursiveRPN();
+        if (error)
+            return error;
+        if(this->infix_expr.pop().operand != R_BR)
+            return NO_R_BR_ERROR;
+        this->rpn_expr.push(a);
+    }
+    else if (c.funct_name != "")
+    {
+        char bracket = this->infix_expr.pop().operand;
+        if (bracket != L_BR)
+            return NO_L_BR_ERROR;
+        this->rpn_expr.push(c);
+        error = this->recursiveRPN();
+    }
+    else
+    {
+        this->rpn_expr.push(c);
+    }
+    return error;
 }
 
 void TParser::parseRpnExpr(void)
 {   // http://pl.wikipedia.org/wiki/Odwrotna_notacja_polska#Algorytm_obliczenia_warto.C5.9Bci_wyra.C5.BCenia_ONP
     TChar top_char, a_char, b_char, f_char;
-	TList op_stack, rpn_copy;
-	while (!this->rpn_expr.isEmpty())
-	{
-		top_char = this->rpn_expr.pop();
-		rpn_copy.push(top_char);
+    TList op_stack, rpn_copy;
+    while (!this->rpn_expr.isEmpty())
+    {
+        top_char = this->rpn_expr.pop();
+        rpn_copy.push(top_char);
         if (top_char.operand == 0 && top_char.funct_name == "")  // number
-			op_stack.push(top_char);
+            op_stack.push(top_char);
         else if (top_char.funct_name != "")                      // one argument functions: sin(), cos(), etc.
         {
             f_char = this->rpn_expr.pop();
@@ -123,15 +159,15 @@ void TParser::parseRpnExpr(void)
             op_stack.push(top_char.funct(f_char));
         }
         else                                                   // two argument operators: +, -, *, /
-		{
-			a_char = op_stack.pop();
-			b_char = op_stack.pop();
-			op_stack.push(top_char.operation(a_char, b_char));
-		}
-	}
-	this->score = op_stack.pop().number;
-	rpn_copy.reverseList();
-	this->rpn_expr = rpn_copy;
+        {
+            a_char = op_stack.pop();
+            b_char = op_stack.pop();
+            op_stack.push(top_char.operation(a_char, b_char));
+        }
+    }
+    this->score = op_stack.pop().number;
+    rpn_copy.reverseList();
+    this->rpn_expr = rpn_copy;
 }
 
 void TParser::stringRpn(void)
