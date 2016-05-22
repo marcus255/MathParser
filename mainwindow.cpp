@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-double rad_deg = 1;
+double rad_deg = RADIAN_CONSTANT;
+int alg_type = RECURSIVE;
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,18 +40,23 @@ void MainWindow::Calculate()
     if ((*err_ptr) == "") // parsing is performed only if there is no error detected
     {
         expr1.infix_expr.reverseList();
-        if(!expr1.recursiveRPN())
+        if (alg_type == RECURSIVE)
         {
-            ui->error_box->setText("Error: recursiveRPN returned non-zero value.");
+            int error = expr1.recursiveRPN();
+            if(error)
+                ui->error_box->setText("Error: recursiveRPN returned non-zero value: " + QString::number(error));
+            else
+                ui->error_box->setText("No errors.");
         }
-        //expr1.rpn();
+        else if (alg_type == DJIKSTRA)
+            expr1.rpn();
         expr1.rpn_expr.reverseList();
         expr1.parseRpnExpr();
         expr1.stringRpn();
 
         ui->rpn_box->setText(expr1.string_score);
         ui->result_box->setText(QString::number(expr1.score, 'g', 10));
-        ui->error_box->setText("No errors.");
+
     }
     else
     {
@@ -66,5 +73,15 @@ void MainWindow::on_Radians_Button_clicked()
 
 void MainWindow::on_Degrees_Button_clicked()
 {
-    rad_deg = 0.0174532925199433;
+    rad_deg = RADIAN_CONSTANT;
+}
+
+void MainWindow::on_Djikstra_Button_clicked()
+{
+    alg_type = DJIKSTRA;
+}
+
+void MainWindow::on_Recursive_Button_clicked()
+{
+    alg_type = RECURSIVE;
 }

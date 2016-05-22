@@ -19,13 +19,25 @@
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>611</width>
-      <height>325</height>
+      <width>629</width>
+      <height>350</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="2" column="0">
       <widget class="QTextBrowser" name="error_box"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Error info:</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
       <layout class="QGridLayout" name="gridLayout">
@@ -38,16 +50,57 @@
        <property name="verticalSpacing">
         <number>7</number>
        </property>
+       <item row="7" column="3" rowspan="2">
+        <widget class="QRadioButton" name="Radians_Button">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Radians</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="9" column="3">
+        <widget class="QRadioButton" name="Degrees_Button">
+         <property name="text">
+          <string>Degrees</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
+        </widget>
+       </item>
        <item row="1" column="0" colspan="3">
         <widget class="QLineEdit" name="infix_box"/>
        </item>
        <item row="3" column="0" colspan="3">
         <widget class="QTextBrowser" name="rpn_box"/>
        </item>
-       <item row="4" column="2" rowspan="4">
+       <item row="4" column="2" rowspan="6">
         <widget class="QTextBrowser" name="result_box">
          <property name="enabled">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" rowspan="6">
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>   Result:    </string>
          </property>
         </widget>
        </item>
@@ -63,15 +116,15 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1" rowspan="4">
-        <widget class="QLabel" name="label_3">
+       <item row="0" column="0" colspan="3">
+        <widget class="QLabel" name="label">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>   Result:    </string>
+          <string>Enter an expression to calculate:</string>
          </property>
         </widget>
        </item>
@@ -94,7 +147,7 @@ as an argument, single numbers only
          </property>
         </widget>
        </item>
-       <item row="4" column="0" rowspan="4">
+       <item row="4" column="0" rowspan="6">
         <widget class="QPushButton" name="run">
          <property name="font">
           <font>
@@ -106,51 +159,30 @@ as an argument, single numbers only
          </property>
         </widget>
        </item>
-       <item row="0" column="0" colspan="3">
-        <widget class="QLabel" name="label">
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
+       <item row="6" column="3">
+        <widget class="QRadioButton" name="Recursive_Button">
          <property name="text">
-          <string>Enter an expression to calculate:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="3">
-        <widget class="QRadioButton" name="Degrees_Button">
-         <property name="text">
-          <string>Degrees</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="3" rowspan="2">
-        <widget class="QRadioButton" name="Radians_Button">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="text">
-          <string>Radians</string>
+          <string>Recursive Algorithm</string>
          </property>
          <property name="checked">
           <bool>true</bool>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup_2</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="5" column="3">
+        <widget class="QRadioButton" name="Djikstra_Button">
+         <property name="text">
+          <string>Djikstra's Algorithm</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup_2</string>
+         </attribute>
         </widget>
        </item>
       </layout>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Error info:</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </widget>
@@ -159,4 +191,8 @@ as an argument, single numbers only
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+ </buttongroups>
 </ui>

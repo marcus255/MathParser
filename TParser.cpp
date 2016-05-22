@@ -112,8 +112,13 @@ int TParser::recursiveRPN(void)
     int error = NO_ERROR;
     TChar a, c;
     c = this->infix_expr.pop();
-    if (c.operand == L_BR)
+    if (c.operand == L_BR || c.funct_name != "")
     {
+        if (c.funct_name != "")
+        {
+            this->infix_expr.pop(); // pop a bracket, function name already indicated that there is nested expression
+            this->rpn_expr.push(c); // push a function on the stack
+        }
         error = this->recursiveRPN();
         if (error)
             return error;
@@ -127,14 +132,14 @@ int TParser::recursiveRPN(void)
             return NO_R_BR_ERROR;
         this->rpn_expr.push(a);
     }
-    else if (c.funct_name != "")
+  /*  else if (c.funct_name != "")
     {
-        char bracket = this->infix_expr.pop().operand;
-        if (bracket != L_BR)
-            return NO_L_BR_ERROR;
+    //    char bracket = this->infix_expr.pop().operand;
+    //    if (bracket != L_BR)
+    //        return NO_L_BR_ERROR;
         this->rpn_expr.push(c);
         error = this->recursiveRPN();
-    }
+    }*/
     else
     {
         this->rpn_expr.push(c);
