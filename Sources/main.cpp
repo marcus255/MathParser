@@ -18,11 +18,9 @@
 // - unknown chars and strings (functions)              78a8*7-cos(2)   diff(34)*7
 // - decimal dot at the beginning and at the end        12+exp(2)+7.    .5-2
 
-// Some errors are not handled:                         Examples:
-// - nesting of functions                               sin(cos(90))    exp(pow(2))
-// - expression as an argument for function             exp(12*4-6)     cos(3*sqr(7))
-// - unary minus                                        4*(-50)         -5+12*78
-// Note: This errors lead to false results
+// Due to algorithms limitations, some errors are not handled.
+// Recursive algorithm requires complete bracketing, i.e. (a+(b*c)). Fails when expression contains unary minus, i.e. (-1+2)
+// Dijkstra algorithm in turn, does not support nesting of functions.
 
 #include <QApplication>
 #include "mainwindow.h"

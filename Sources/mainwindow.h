@@ -10,7 +10,7 @@
 
 #define RADIAN_CONSTANT 0.0174532925199433
 #define RECURSIVE       1
-#define DJIKSTRA        2
+#define DIJKSTRA        2
 
 using namespace std;
 
@@ -36,7 +36,7 @@ private slots:
 
     void on_Degrees_Button_clicked();
 
-    void on_Djikstra_Button_clicked();
+    void on_Dijkstra_Button_clicked();
 
     void on_Recursive_Button_clicked();
 

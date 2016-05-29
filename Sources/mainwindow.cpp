@@ -48,7 +48,7 @@ void MainWindow::Calculate()
             else
                 ui->error_box->setText("No errors.");
         }
-        else if (alg_type == DJIKSTRA)
+        else if (alg_type == DIJKSTRA)
             expr1.rpn();
         expr1.rpn_expr.reverseList();
         expr1.parseRpnExpr();
@@ -76,9 +76,9 @@ void MainWindow::on_Degrees_Button_clicked()
     rad_deg = RADIAN_CONSTANT;
 }
 
-void MainWindow::on_Djikstra_Button_clicked()
+void MainWindow::on_Dijkstra_Button_clicked()
 {
-    alg_type = DJIKSTRA;
+    alg_type = DIJKSTRA;
 }
 
 void MainWindow::on_Recursive_Button_clicked()
