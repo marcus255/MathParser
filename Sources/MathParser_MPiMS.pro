@@ -24,3 +24,5 @@ HEADERS  += mainwindow.h \
     TParser.h
 
 FORMS    += mainwindow.ui
+
+CONFIG+= static
